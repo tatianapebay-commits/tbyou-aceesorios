@@ -1,0 +1,14 @@
+<article class="producto-card">
+    <a href="/productos/<%= p.id %>">
+        <img src="<%= p.imagen_url || '/images/sin-imagen.svg' %>" alt="<%= p.nombre %>"
+             onerror="this.onerror=null;this.src='/images/sin-imagen.svg'">
+    </a>
+    <span class="etiqueta"><%= p.categoria %></span>
+    <h3><a href="/productos/<%= p.id %>"><%= p.nombre %></a></h3>
+    <p class="precio">$<%= p.precio_venta.toLocaleString('es-AR') %></p>
+    <% if (p.stock > 0) { %>
+        <p class="stock">Quedan <%= p.stock %></p>
+    <% } else { %>
+        <p class="stock sin-stock">Sin stock</p>
+    <% } %>
+</article>

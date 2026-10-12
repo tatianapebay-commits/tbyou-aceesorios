@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400" viewBox="0 0 400 400">
+  <rect width="400" height="400" fill="#fbf4f6"/>
+  <circle cx="200" cy="170" r="58" fill="none" stroke="#e8a2b5" stroke-width="10"/>
+  <circle cx="200" cy="112" r="12" fill="#e8a2b5"/>
+  <text x="200" y="290" text-anchor="middle" font-family="Arial, sans-serif" font-size="26" fill="#c97a93">T.B.You</text>
+  <text x="200" y="322" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#b0a0a8">imagen próximamente</text>
+</svg>
