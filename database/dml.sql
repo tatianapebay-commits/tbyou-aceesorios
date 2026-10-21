@@ -4,6 +4,9 @@
 --  psql -U postgres -d tbyou_accesorios -f database/dml.sql
 -- =============================================================
 
+-- Los archivos están en UTF-8 (para que los acentos y la ñ se guarden bien en Windows)
+SET client_encoding = 'UTF8';
+
 -- -------------------------------------------------------------
 -- CATEGORÍAS
 -- -------------------------------------------------------------
@@ -101,9 +104,9 @@ INSERT INTO usuarios (nombre, apellido, email, password_hash, telefono, rol) VAL
 -- -------------------------------------------------------------
 -- PEDIDOS DE EJEMPLO
 -- -------------------------------------------------------------
-INSERT INTO pedidos (usuario_id, estado, direccion_envio) VALUES
-(2, 'entregado', 'Pinto 450, Tandil'),
-(3, 'pendiente', 'Belgrano 1020, Tandil');
+INSERT INTO pedidos (usuario_id, estado, direccion_envio, medio_pago, notas) VALUES
+(2, 'entregado', 'Pinto 450, Tandil',     'efectivo',      'Retira en el local'),
+(3, 'pendiente', 'Belgrano 1020, Tandil', 'transferencia', NULL);
 
 INSERT INTO pedido_detalle (pedido_id, producto_id, cantidad, precio_unitario) VALUES
 (1, 2,  1,  5000.00),   -- Aros corazón

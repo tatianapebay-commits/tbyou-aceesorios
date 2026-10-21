@@ -4,11 +4,15 @@
 --  Uso:   psql -U postgres -f database/ddl.sql
 -- =============================================================
 
+-- Los archivos están en UTF-8 (para que los acentos y la ñ se guarden bien en Windows)
+SET client_encoding = 'UTF8';
+
 -- Crear la base (si ya existe, se borra y se vuelve a crear)
 DROP DATABASE IF EXISTS tbyou_accesorios;
-CREATE DATABASE tbyou_accesorios WITH ENCODING 'UTF8';
+CREATE DATABASE tbyou_accesorios WITH ENCODING 'UTF8' TEMPLATE template0;
 
 \c tbyou_accesorios
+SET client_encoding = 'UTF8';
 
 -- -------------------------------------------------------------
 -- CATEGORÍAS: aros, anillos, collares, mochilas, etc.
@@ -89,11 +93,15 @@ CREATE TABLE pedidos (
     fecha            TIMESTAMP     NOT NULL DEFAULT NOW(),
     estado           VARCHAR(15)   NOT NULL DEFAULT 'pendiente',
     direccion_envio  VARCHAR(200)  NOT NULL,
+    medio_pago       VARCHAR(20)   NOT NULL DEFAULT 'transferencia',
+    notas            VARCHAR(300),
     total            NUMERIC(12,2) NOT NULL DEFAULT 0,
     CONSTRAINT fk_pedidos_usuario FOREIGN KEY (usuario_id)
         REFERENCES usuarios (id) ON UPDATE CASCADE ON DELETE RESTRICT,
     CONSTRAINT ck_pedidos_estado CHECK (estado IN
         ('pendiente', 'pagado', 'enviado', 'entregado', 'cancelado')),
+    CONSTRAINT ck_pedidos_medio_pago CHECK (medio_pago IN
+        ('transferencia', 'mercadopago', 'efectivo')),
     CONSTRAINT ck_pedidos_total CHECK (total >= 0)
 );
 
