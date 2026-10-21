@@ -28,6 +28,10 @@
     {
       "key": "pedidoId",
       "value": ""
+    },
+    {
+      "key": "pedidoCarritoId",
+      "value": ""
     }
   ],
   "item": [
@@ -1712,6 +1716,255 @@
               ]
             },
             "description": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "6. Carrito (compra desde la página)",
+      "item": [
+        {
+          "name": "Comprar como clienta nueva",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Responde 201', () => pm.response.to.have.status(201));",
+                  "const r = pm.response.json();",
+                  "pm.collectionVariables.set('pedidoCarritoId', r.pedido.id);",
+                  "pm.test('Total = 2 x 6000 + 4500', () => pm.expect(r.pedido.total).to.eql(16500));",
+                  "pm.test('Devuelve el link de WhatsApp', () => pm.expect(r.whatsapp_url).to.include('wa.me'));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/checkout",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "checkout"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"cliente\": {\n    \"nombre\": \"Julieta\",\n    \"apellido\": \"Romero\",\n    \"email\": \"julieta.romero@mail.com\",\n    \"telefono\": \"2494333333\"\n  },\n  \"direccion_envio\": \"Av. Colón 1500, Tandil\",\n  \"medio_pago\": \"transferencia\",\n  \"notas\": \"Envolver para regalo\",\n  \"items\": [\n    {\n      \"producto_id\": 21,\n      \"cantidad\": 2\n    },\n    {\n      \"producto_id\": 23,\n      \"cantidad\": 1\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Ver el pedido guardado en la base",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Responde 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Guardó el medio de pago', () => pm.expect(pm.response.json().medio_pago).to.eql('transferencia'));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/pedidos/{{pedidoCarritoId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "pedidos",
+                "{{pedidoCarritoId}}"
+              ]
+            },
+            "description": ""
+          }
+        },
+        {
+          "name": "La misma clienta vuelve a comprar (no se duplica)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Responde 201', () => pm.response.to.have.status(201));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/checkout",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "checkout"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"cliente\": {\n    \"nombre\": \"Julieta\",\n    \"apellido\": \"Romero\",\n    \"email\": \"julieta.romero@mail.com\",\n    \"telefono\": \"2494333333\"\n  },\n  \"direccion_envio\": \"Retiro en el local\",\n  \"medio_pago\": \"efectivo\",\n  \"items\": [\n    {\n      \"producto_id\": 1,\n      \"cantidad\": 1\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Error: medio de pago inválido",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Responde 400', () => pm.response.to.have.status(400));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/checkout",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "checkout"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"cliente\": {\n    \"nombre\": \"Julieta\",\n    \"apellido\": \"Romero\",\n    \"email\": \"julieta.romero@mail.com\",\n    \"telefono\": \"2494333333\"\n  },\n  \"direccion_envio\": \"x\",\n  \"medio_pago\": \"cheque\",\n  \"items\": [\n    {\n      \"producto_id\": 1,\n      \"cantidad\": 1\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Error: carrito vacío",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Responde 400', () => pm.response.to.have.status(400));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/checkout",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "checkout"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"cliente\": {\n    \"nombre\": \"Julieta\",\n    \"apellido\": \"Romero\",\n    \"email\": \"julieta.romero@mail.com\",\n    \"telefono\": \"2494333333\"\n  },\n  \"direccion_envio\": \"x\",\n  \"medio_pago\": \"efectivo\",\n  \"items\": []\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Error: sin stock (no se guarda nada)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Responde 409', () => pm.response.to.have.status(409));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/checkout",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "checkout"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"cliente\": {\n    \"nombre\": \"Pedro\",\n    \"apellido\": \"Gómez\",\n    \"email\": \"pedro.gomez@mail.com\",\n    \"telefono\": \"2494444444\"\n  },\n  \"direccion_envio\": \"x\",\n  \"medio_pago\": \"efectivo\",\n  \"items\": [\n    {\n      \"producto_id\": 32,\n      \"cantidad\": 100\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
           }
         }
       ]

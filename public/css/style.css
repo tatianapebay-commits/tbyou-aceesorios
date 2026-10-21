@@ -352,3 +352,145 @@ header {
 }
 
 .titulo-seccion + .productos-grid { padding-top: 0; }
+
+/* =========================
+   CARRITO
+========================= */
+.carrito-icono { position: relative; }
+.carrito-contador {
+    position: absolute;
+    top: -8px;
+    right: -12px;
+    background: #c97a93;
+    color: #fff;
+    font-size: 0.7rem;
+    font-weight: 600;
+    min-width: 18px;
+    height: 18px;
+    line-height: 18px;
+    border-radius: 9px;
+    text-align: center;
+    padding: 0 4px;
+}
+
+.producto-card .agregar-carrito { margin-top: 6px; }
+
+.comprar { display: flex; align-items: flex-end; gap: 12px; flex-wrap: wrap; }
+.comprar label { display: flex; flex-direction: column; font-size: 0.85rem; gap: 4px; }
+.comprar input { width: 80px; padding: 8px; border: 1px solid #e8a2b5; border-radius: 8px; font-family: inherit; }
+
+.carrito { max-width: 1200px; margin: auto; padding: 40px 20px 60px; }
+.carrito h1 { text-align: center; margin-bottom: 30px; }
+
+.carrito-grid {
+    display: grid;
+    grid-template-columns: 1.6fr 1fr;
+    gap: 30px;
+    align-items: start;
+}
+
+.carrito-tabla {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+}
+
+.carrito-tabla th { background: #fbf4f6; font-size: 0.85rem; text-align: left; padding: 12px; }
+.carrito-tabla td { padding: 10px 12px; border-top: 1px solid #f3e3e9; vertical-align: middle; }
+.carrito-tabla img { width: 56px; height: 56px; object-fit: cover; border-radius: 8px; display: block; }
+.carrito-tabla .nombre a { text-decoration: none; font-weight: 600; }
+.carrito-tabla input { width: 64px; padding: 6px; border: 1px solid #e8a2b5; border-radius: 6px; font-family: inherit; }
+
+.quitar {
+    border: none;
+    background: none;
+    font-size: 1.4rem;
+    color: #b55;
+    cursor: pointer;
+    line-height: 1;
+}
+
+.carrito-total { text-align: right; font-size: 1.2rem; margin-top: 15px; }
+.carrito-total strong { color: #c97a93; }
+
+.form-compra {
+    background: #fff;
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.form-compra h2 { font-size: 1.05rem; margin-top: 6px; }
+.form-compra input:not([type=radio]), .form-compra textarea {
+    width: 100%;
+    padding: 11px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-family: inherit;
+}
+.form-compra textarea { height: 80px; resize: vertical; }
+.opcion-pago { display: flex; gap: 8px; align-items: center; cursor: pointer; }
+.opcion-pago input { accent-color: #c97a93; }
+
+.boton-grande { font-size: 1rem; padding: 12px 22px; }
+.boton-whatsapp { background-color: #25d366; }
+.boton-whatsapp:hover { background-color: #1da851; }
+.ayuda { font-size: 0.8rem; color: #888; }
+
+.aviso { background: #fff6e0; border: 1px solid #f0d58a; padding: 10px 14px; border-radius: 8px; margin-top: 12px; }
+.aviso.error { background: #fdecee; border-color: #f2b8c0; color: #a33; margin-top: 0; }
+
+.compra-ok {
+    max-width: 600px;
+    margin: auto;
+    text-align: center;
+    background: #fff;
+    border-radius: 12px;
+    padding: 40px 30px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+.compra-ok h2 { color: #c97a93; }
+
+.toast {
+    position: fixed;
+    bottom: 25px;
+    left: 50%;
+    transform: translate(-50%, 30px);
+    background: #4a4a4a;
+    color: #fff;
+    padding: 12px 22px;
+    border-radius: 25px;
+    font-size: 0.9rem;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s ease;
+    z-index: 100;
+}
+.toast.visible { opacity: 1; transform: translate(-50%, 0); }
+
+[hidden] { display: none !important; }
+
+.carrito-grid > * { min-width: 0; }
+
+@media (max-width: 900px) {
+    .carrito-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 520px) {
+    .carrito-tabla th:nth-child(1), .carrito-tabla td:nth-child(1) { display: none; }
+    .carrito-tabla th, .carrito-tabla td { padding: 8px 6px; font-size: 0.85rem; }
+    .carrito-tabla input { width: 48px; }
+}
+
+/* Enlace discreto al panel de administración */
+.footer-admin { margin-top: 6px; font-size: 0.75rem; opacity: 0.7; }
+.footer-admin a { color: inherit; }
